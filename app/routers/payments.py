@@ -97,8 +97,8 @@ async def create_checkout(
     # Append a placeholder that Stripe replaces with the real session ID.
     # Inject locale prefix into the return URLs so Stripe redirects the customer
     # to the correct locale path (e.g. /en/bookings rather than /bookings).
-    success_url = _with_locale(settings.stripe_success_url, payload.locale) + "&session_id={CHECKOUT_SESSION_ID}"
-    cancel_url = _with_locale(settings.stripe_cancel_url, payload.locale)
+    # success_url = _with_locale(settings.stripe_success_url, payload.locale) + "&session_id={CHECKOUT_SESSION_ID}"
+    # cancel_url = _with_locale(settings.stripe_cancel_url, payload.locale)
 
     expires_at = datetime.now(UTC) + timedelta(
         minutes=settings.stripe_checkout_expires_minutes
@@ -136,8 +136,8 @@ async def create_checkout(
                 "booking_id": str(payload.booking_id),
                 "user_id": str(current_user.id),
             },
-            "success_url": success_url,
-            "cancel_url": cancel_url,
+            "success_url": settings.stripe_success_url,
+            "cancel_url": settings.stripe_cancel_url,
             "expires_at": int(expires_at.timestamp()),
         }
     )
