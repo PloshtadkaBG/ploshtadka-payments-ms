@@ -85,11 +85,8 @@ async def create_checkout(
     locale = payload.locale or "en"
 
     # Append a placeholder that Stripe replaces with the real session ID
-    success_url = (
-        settings.stripe_success_url.replace("/bookings", f"/{locale}/bookings")
-        + "&session_id={CHECKOUT_SESSION_ID}"
-    )
-    cancel_url = settings.stripe_cancel_url.replace("/bookings", f"/{locale}/bookings")
+    success_url = settings.stripe_success_url + "&session_id={CHECKOUT_SESSION_ID}"
+    cancel_url = settings.stripe_cancel_url
 
     expires_at = datetime.now(UTC) + timedelta(
         minutes=settings.stripe_checkout_expires_minutes
